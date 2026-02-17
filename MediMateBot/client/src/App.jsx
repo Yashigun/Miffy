@@ -229,25 +229,63 @@ function App() {
 
   return (
     <div className="app">
-      {/* Floating shapes */}
-      <FloatingShape color="#02415a" size={250} top="10%" left="15%" delay={0} />
-      <FloatingShape color="#036280" size={300} top="40%" left="70%" delay={3} />
-      <FloatingShape color="#012f45" size={200} top="65%" left="25%" delay={5} />
-      <FloatingShape color="#043d5f" size={150} top="75%" left="50%" delay={2} />
+      {/* Background floating shapes — more vibrant to match landing page */}
+      <FloatingShape color="#0369a1" size={320} top="5%"  left="10%" delay={0} />
+      <FloatingShape color="#0d9488" size={260} top="45%" left="72%" delay={3} />
+      <FloatingShape color="#02415a" size={220} top="70%" left="20%" delay={5} />
+      <FloatingShape color="#0891b2" size={180} top="25%" left="80%" delay={2} />
+      <FloatingShape color="#134e4a" size={150} top="80%" left="60%" delay={4} />
 
-      {/* Header */}
-      <div className="header">MediMate Bot</div>
+      {/* ── Header ── */}
+      <div className="header">
+        <div className="header-inner">
+          <div className="header-brand">
+            <div className="header-avatar">
+              <img src={bot_icon} alt="MediMate" />
+            </div>
+            <div>
+              <h1 className="header-title">MediMate Bot</h1>
+              <p className="header-subtitle">Your AI Health Assistant</p>
+            </div>
+          </div>
+          <div className="header-status">
+            <span className="status-dot" />
+            <span className="status-label">Online</span>
+          </div>
+        </div>
+      </div>
 
-      {/* Chat window */}
+      {/* ── Chat window ── */}
       <div className="chat-box">
+
+        {/* Empty state — shown before any messages */}
+        {messages.length === 0 && (
+          <div className="welcome-card">
+            <div className="welcome-emoji">🩺</div>
+            <h2 className="welcome-title">How can I help you?</h2>
+            <p className="welcome-body">
+              Describe your symptoms below or tap the mic to speak.
+              I'll provide a structured triage response.
+            </p>
+            <div className="quick-chips">
+              {["I have a headache", "I feel feverish", "Chest pain", "I feel dizzy"].map((q) => (
+                <button
+                  key={q}
+                  className="chip"
+                  onClick={() => { setInput(q); }}
+                >
+                  {q}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
         {messages.map((msg, i) => (
           <div
             key={i}
             className={`message ${msg.role}`}
-            style={{
-              animation: "fadeIn 0.3s forwards",
-              animationDelay: `${i * 0.1}s`,
-            }}
+            style={{ animationDelay: `${i * 0.05}s` }}
           >
             {msg.role === "bot" && (
               <img src={bot_icon} alt="bot" className="bot-avatar" />
@@ -260,66 +298,66 @@ function App() {
         <div ref={chatEndRef} />
       </div>
 
-      {/* Input bar */}
-      <div className="input-bar">
-        <input
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-          placeholder={
-            isTranscribing
-              ? "Transcribing..."
-              : isListening
-              ? "Recording... click mic to stop"
-              : "Describe your symptoms..."
-          }
-          disabled={isTranscribing}
-        />
+      {/* ── Bottom input area ── */}
+      <div className="input-area">
 
-        {/* Mic button — only rendered if MediaRecorder is supported */}
-        {voiceSupported && (
-          <button
-            className={`mic-btn ${isListening ? "listening" : ""} ${isTranscribing ? "transcribing" : ""}`}
-            onClick={toggleListening}
-            disabled={isTranscribing}
-            aria-label={isListening ? "Stop recording" : "Start voice input"}
-            aria-pressed={isListening}
-            title={isTranscribing ? "Transcribing..." : isListening ? "Stop recording" : "Speak your symptoms"}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              width="20"
-              height="20"
-            >
-              <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z" />
-              <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" />
-            </svg>
-          </button>
+        {/* Voice status / error banners */}
+        {isListening && (
+          <p className="voice-status" aria-live="polite">
+            🎙 Recording... click the mic again to stop
+          </p>
+        )}
+        {isTranscribing && (
+          <p className="voice-status" aria-live="polite">
+            ✨ Transcribing with Gemini...
+          </p>
+        )}
+        {voiceError && (
+          <p className="voice-error" role="alert">
+            {voiceError}
+          </p>
         )}
 
-        <button onClick={sendMessage} disabled={isTranscribing}>Send</button>
+        <div className="input-bar">
+          <input
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+            placeholder={
+              isTranscribing
+                ? "Transcribing your voice..."
+                : isListening
+                ? "Listening... click mic to stop"
+                : "Describe your symptoms..."
+            }
+            disabled={isTranscribing}
+          />
+
+          {/* Mic button */}
+          {voiceSupported && (
+            <button
+              className={`mic-btn ${isListening ? "listening" : ""} ${isTranscribing ? "transcribing" : ""}`}
+              onClick={toggleListening}
+              disabled={isTranscribing}
+              aria-label={isListening ? "Stop recording" : "Start voice input"}
+              aria-pressed={isListening}
+              title={isTranscribing ? "Transcribing..." : isListening ? "Stop" : "Speak your symptoms"}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+                <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z" />
+                <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" />
+              </svg>
+            </button>
+          )}
+
+          {/* Send button */}
+          <button className="send-btn" onClick={sendMessage} disabled={isTranscribing}>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+              <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
+            </svg>
+          </button>
+        </div>
       </div>
-
-      {/* Status messages */}
-      {isListening && (
-        <p className="voice-status" aria-live="polite">
-          Recording... click the mic again to stop
-        </p>
-      )}
-      {isTranscribing && (
-        <p className="voice-status" aria-live="polite">
-          Transcribing with Gemini...
-        </p>
-      )}
-
-      {/* Voice error message */}
-      {voiceError && (
-        <p className="voice-error" role="alert">
-          {voiceError}
-        </p>
-      )}
     </div>
   );
 }
