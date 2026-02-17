@@ -38,7 +38,7 @@ const Dashboard = () => {
           <div className="p-3 bg-teal-50 rounded-lg border-l-4 border-teal-600">
             <h3 className="font-semibold text-teal-700">General Info</h3>
           </div>
-          <button className="w-full text-left p-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors" onClick={() => window.open("http://localhost:5173")}>
+          <button className="w-full text-left p-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors" onClick={() => window.open("https://localhost:5173")}>
             <h3 className="font-semibold text-teal-700">Chat with Miffy</h3>
           </button>
         </nav>
