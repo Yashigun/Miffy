@@ -26,7 +26,7 @@ const Header = () => {
               </p>
             </div>
             
-            <button className='group flex items-center gap-3 bg-white text-primary px-8 py-4 rounded-full font-semibold text-sm md:text-base shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 hover:bg-teal-50 animate-slide-in-left animation-delay-600 relative overflow-hidden' onClick={() => window.open("http://localhost:5173")}>
+            <button className='group flex items-center gap-3 bg-white text-primary px-8 py-4 rounded-full font-semibold text-sm md:text-base shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 hover:bg-teal-50 animate-slide-in-left animation-delay-600 relative overflow-hidden' onClick={() => window.open("https://localhost:5173")}>
               <span className='relative text-xl z-10'>Talk to Miffy
               </span>
               <div className='w-7 h-7 bg-primary rounded-full flex items-center justify-center group-hover:bg-teal-700 transition-all duration-300 group-hover: relative z-10'>

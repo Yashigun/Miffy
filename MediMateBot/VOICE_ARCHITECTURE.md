@@ -428,7 +428,7 @@ All errors preserve the chat input box and text entry — voice failure never bl
 This is the exact sequence to run during live demo for maximum impact:
 
 ```
-1. Open MediMate Bot in Chrome (http://localhost:5173 or whatever Vite port)
+1. Open MediMate Bot in Chrome (https://localhost:5173 or whatever Vite port)
 
 2. Say to judges:
    "Most people who need medical help urgently can't type. Watch this."
