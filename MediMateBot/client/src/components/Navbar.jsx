@@ -36,7 +36,7 @@ const NavBar = () => {
         {
             token
             ? <div className='flex items-center cursor-pointer group relative'>
-                <img className='w-10 rounded-full mr-1.5 border-1 border-primary' src={pfp_png} alt="profile pic" />
+                <img className='w-10 rounded-full mr-1.5 border border-primary' src={pfp_png} alt="profile pic" />
                 <img className='w-3' src={dropdown} alt="" />
                 <div className='absolute top-0 right-0 pt-14 text-base font-small text-secondary z-20 hidden group-hover:block'>
                     <div className='-m-3 min-w-48 bg-primary rounded flex flex-col gap-1.5'>
